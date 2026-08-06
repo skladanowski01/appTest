@@ -1,19 +1,40 @@
+// --- 0. INICJALIZACJA LENIS SMOOTH SCROLL ---
+const lenis = new Lenis({
+  duration: 1.2,
+  easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+  smoothWheel: true,
+  touchMultiplier: 2,
+});
+
+// Integracja Lenisa z GSAP ScrollTrigger
+lenis.on('scroll', ScrollTrigger.update);
+
+gsap.ticker.add((time) => {
+  lenis.raf(time * 1000);
+});
+
+gsap.ticker.lagSmoothing(0);
+
 // Rejestracja wtyczki ScrollTrigger dla GSAP
 gsap.registerPlugin(ScrollTrigger);
 
-// --- POMOCNICZA FUNKCJA: SplitText (rozbijanie tekstu na litery) ---
+// --- POMOCNICZA FUNKCJA: SplitText ---
 function splitTextIntoSpans(selector) {
   const elements = document.querySelectorAll(selector);
   elements.forEach(el => {
     const text = el.innerText;
-    el.innerHTML = ""; // Czyszczenie oryginalnego tekstu
+    el.innerHTML = "";
     
-    // Rozbijanie na poszczególne litery
-    [...text].forEach(char => {
+    [...text].forEach((char, index) => {
       const span = document.createElement("span");
       span.style.display = "inline-block";
-      // Jeśli znak to spacja, zamieniamy na twardą spację, aby nie zepsuć odstępów
       span.innerHTML = char === " " ? "&nbsp;" : char;
+      
+      // Jeśli to kropka na końcu tytułu, dodaj klasę span-title
+      if (char === "." && index === text.length - 1) {
+        span.classList.add("span-title");
+      }
+      
       el.appendChild(span);
     });
   });
@@ -23,57 +44,45 @@ function splitTextIntoSpans(selector) {
 splitTextIntoSpans(".title");
 splitTextIntoSpans(".subtitle");
 
-
-// --- 1. ANIMACJA WEJŚCIOWA Z EFEKTEM STAGGER DLA LITER ---
+// --- 1. ANIMACJA WEJŚCIOWA ---
 const masterTl = gsap.timeline({ defaults: { ease: "power3.out" } });
 
 masterTl
-  // Pasek nawigacji wjeżdża z góry
   .from(".navbar", {
     y: -50,
     opacity: 0,
     duration: 1
   })
-  // Logo
   .from(".logo", {
     x: -20,
     opacity: 0,
     duration: 0.6
   }, "-=0.5")
-  // Stagger dla linków nawigacji
   .from(".nav-links a", {
     y: -20,
     opacity: 0,
     duration: 0.5,
     stagger: 0.1
   }, "-=0.4")
-  
-  // EFEKT STAGGER NA LITERACH TYTUŁU ("Emocje to Design.")
   .from(".title span", {
     y: 50,
     opacity: 0,
-    rotateX: -90, // Efekt obrotu 3D dla liter
+    rotateX: -90,
     duration: 0.8,
-    stagger: 0.03 // Bardzo szybki stagger dla każdej litery
+    stagger: 0.03
   }, "-=0.2")
-
-  // EFEKT STAGGER NA LITERACH PODTYTUŁU ("Tworzę animacje www.")
   .from(".subtitle span", {
     y: 20,
     opacity: 0,
     duration: 0.5,
     stagger: 0.02
   }, "-=0.4")
-
-  // Pojawienie się strzałki
   .from(".arrow", {
     scale: 0,  
     opacity: 0,
     duration: 0.8,  
     ease: "back.out(1.7)"
   }, "-=0.2")
-  
-  // Wolno pulsująca strzałka w dół po załadowaniu
   .to(".arrow", {
     y: 15,
     opacity: 0.4,
@@ -83,8 +92,7 @@ masterTl
     ease: "sine.inOut"
   });
 
-
-// --- 2. ZNIKANIE TEKSTU PODCZAS SCROLLOWANIA (ScrollTrigger) ---
+// --- 2. SCROLLTRIGGER (ZAKRYWANIE TEKSTU) ---
 const heroScrollTl = gsap.timeline({
   scrollTrigger: {
     trigger: ".scroll-wrapper",
@@ -94,15 +102,13 @@ const heroScrollTl = gsap.timeline({
   }
 });
 
-// Zanikanie kontenera wraz z literami podczas przewijania w dół
 heroScrollTl.to(".container", {
   opacity: 0,
   y: -60,
   ease: "power1.inOut"
 });
 
-
-// --- 3. OBSŁUGA MENU HAMBURGERA ---
+// --- 3. MENU HAMBURGER ---
 const hamburger = document.querySelector('.hamburger');
 const navLinks = document.querySelector('.nav-links');
 
@@ -120,3 +126,17 @@ hamburger.addEventListener('click', () => {
     });
   }
 });
+
+// --- 4. AUTOPLAY WIDEO DLA MOBILNYCH (Poprawiony selektor) ---
+const heroVideo = document.querySelector('.bg-video');
+
+if (heroVideo) {
+  heroVideo.muted = true;
+  const playPromise = heroVideo.play();
+
+  if (playPromise !== undefined) {
+    playPromise.catch((error) => {
+      console.warn("Autoplay zablokowany przez przeglądarkę mobilną:", error);
+    });
+  }
+}

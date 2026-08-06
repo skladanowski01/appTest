@@ -1,78 +1,108 @@
 // Rejestracja wtyczki ScrollTrigger dla GSAP
 gsap.registerPlugin(ScrollTrigger);
 
-// --- 1. ANIMACJA WEJŚCIOWA (Na start po wczytaniu strony) ---
+// --- POMOCNICZA FUNKCJA: SplitText (rozbijanie tekstu na litery) ---
+function splitTextIntoSpans(selector) {
+  const elements = document.querySelectorAll(selector);
+  elements.forEach(el => {
+    const text = el.innerText;
+    el.innerHTML = ""; // Czyszczenie oryginalnego tekstu
+    
+    // Rozbijanie na poszczególne litery
+    [...text].forEach(char => {
+      const span = document.createElement("span");
+      span.style.display = "inline-block";
+      // Jeśli znak to spacja, zamieniamy na twardą spację, aby nie zepsuć odstępów
+      span.innerHTML = char === " " ? "&nbsp;" : char;
+      el.appendChild(span);
+    });
+  });
+}
+
+// Rozbijamy tytuł i podtytuł na pojedyncze litery
+splitTextIntoSpans(".title");
+splitTextIntoSpans(".subtitle");
+
+
+// --- 1. ANIMACJA WEJŚCIOWA Z EFEKTEM STAGGER DLA LITER ---
 const masterTl = gsap.timeline({ defaults: { ease: "power3.out" } });
 
 masterTl
-  // Posek nawigacji wjeżdża z góry
+  // Pasek nawigacji wjeżdża z góry
   .from(".navbar", {
     y: -50,
     opacity: 0,
     duration: 1
   })
-  // Logo pojawia się z przesunięciem
+  // Logo
   .from(".logo", {
     x: -20,
     opacity: 0,
     duration: 0.6
   }, "-=0.5")
-  // STAGGER DLA LINKÓW NAWIGACJI (pojawiają się kaskadowo po kolei)
+  // Stagger dla linków nawigacji
   .from(".nav-links a", {
     y: -20,
     opacity: 0,
     duration: 0.5,
-    stagger: 0.15
+    stagger: 0.1
   }, "-=0.4")
-  // Tytuł i podtytuł w sekcji Hero
-  .from(".title", {
-    y: -30,
+  
+  // EFEKT STAGGER NA LITERACH TYTUŁU ("Emocje to Design.")
+  .from(".title span", {
+    y: 50,
     opacity: 0,
-    duration: 0.8
+    rotateX: -90, // Efekt obrotu 3D dla liter
+    duration: 0.8,
+    stagger: 0.03 // Bardzo szybki stagger dla każdej litery
   }, "-=0.2")
-  .from(".subtitle", {
-    y: 30,
+
+  // EFEKT STAGGER NA LITERACH PODTYTUŁU ("Tworzę animacje www.")
+  .from(".subtitle span", {
+    y: 20,
     opacity: 0,
-    duration: 0.8
-  }, "-=0.5")
-  // Pojawienie się strzałki na start
+    duration: 0.5,
+    stagger: 0.02
+  }, "-=0.4")
+
+  // Pojawienie się strzałki
   .from(".arrow", {
     scale: 0,  
     opacity: 0,
     duration: 0.8,  
     ease: "back.out(1.7)"
-  }, "-=0.4")
-  // PO WEJŚCIU: Wolno pulsująca / mrugająca strzałka w dół
+  }, "-=0.2")
+  
+  // Wolno pulsująca strzałka w dół po załadowaniu
   .to(".arrow", {
-    y: 15,            // Przesunięcie lekko w dół
-    opacity: 0.4,     // Efekt mrugania (zmniejszenie widoczności)
-    duration: 1.5,    // Wolne tempo
-    repeat: -1,       // Nieskończona pętla
-    yoyo: true,       // Płynny powrót do pierwotnego stanu
+    y: 15,
+    opacity: 0.4,
+    duration: 1.5,
+    repeat: -1,
+    yoyo: true,
     ease: "sine.inOut"
   });
 
 
-// --- 2. ZNIKANIE TEKSTU PODCZAS SCROLLOWANIA W DÓŁ (I POWRÓT W GÓRĘ) ---
+// --- 2. ZNIKANIE TEKSTU PODCZAS SCROLLOWANIA (ScrollTrigger) ---
 const heroScrollTl = gsap.timeline({
   scrollTrigger: {
     trigger: ".scroll-wrapper",
     start: "top top",
     end: "bottom top",
-    scrub: 1 // Powiązanie ze skrollem (działa automatycznie w dół I W GÓRĘ)
+    scrub: 1
   }
 });
 
-// Zmniejszamy przezroczystość elementów Hero i unosimy je w górę przy skrolowaniu
-heroScrollTl.to(".container > *", {
+// Zanikanie kontenera wraz z literami podczas przewijania w dół
+heroScrollTl.to(".container", {
   opacity: 0,
   y: -60,
-  stagger: 0.1,
   ease: "power1.inOut"
 });
 
 
-// --- 3. OBSŁUGA MENU HAMBURGERA NA MOBILNYCH URZĄDZENIACH ---
+// --- 3. OBSŁUGA MENU HAMBURGERA ---
 const hamburger = document.querySelector('.hamburger');
 const navLinks = document.querySelector('.nav-links');
 

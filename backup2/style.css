@@ -1,25 +1,21 @@
-/* Reset podstawowy */
+/* ==========================================
+   1. RESET & PODSTAWOWE STYLE (Mobile First)
+   ========================================== */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  text-decoration: none;   
+  text-decoration: none; 
 }
 
 body {
   background-color: #0f172a;
   color: #ffffff;
   font-family: 'Stack Sans Notch', sans-serif;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 6rem 1.5rem 2rem;
-  overflow-x: hidden; 
+  overflow-x: hidden; /* Brak poziomego paska przewijania */
 }
 
-/* Wideo w tle */
+/* Wideo w tle & Overlay */
 .bg-video {
   position: fixed;
   top: 0;
@@ -36,12 +32,12 @@ body {
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(15, 23, 42, 0.85); 
+  background: rgba(15, 23, 42, 0.5); 
   z-index: -1;
 }
 
 /* ==========================================
-   NAVBAR (Mobile First)
+   2. NAVBAR (Mobile)
    ========================================== */
 .navbar {
   position: fixed;
@@ -61,14 +57,12 @@ body {
 .logo {
   font-size: 1.5rem;
   font-weight: 700;
-  letter-spacing: 1px;
 }
 
-.logo span, .span-title {
+.logo span {
   color: #38bdf8;
 }
 
-/* Przycisk Hamburgera */
 .hamburger {
   display: flex;
   flex-direction: column;
@@ -86,21 +80,8 @@ body {
   height: 2px;
   background-color: #ffffff;
   border-radius: 2px;
-  transition: transform 0.3s ease, opacity 0.3s ease;
 }
 
-/* Animowany stan hamburgera w X */
-.hamburger.active span:nth-child(1) {
-  transform: translateY(9px) rotate(45deg);
-}
-.hamburger.active span:nth-child(2) {
-  opacity: 0;
-}
-.hamburger.active span:nth-child(3) {
-  transform: translateY(-9px) rotate(-45deg);
-}
-
-/* Mobilne Menu rozwijane */
 .nav-links {
   position: fixed;
   top: 0;
@@ -113,66 +94,123 @@ body {
   justify-content: center;
   align-items: center;
   gap: 2rem;
-  transform: translateX(100%); /* Ukryte po prawej */
+  transform: translateX(100%);
   transition: transform 0.4s ease-in-out;
   z-index: 9;
 }
 
 .nav-links.active {
-  transform: translateX(0); /* Pojawia się po kliknięciu */
+  transform: translateX(0);
 }
 
 .nav-links a {
   color: #cbd5e1;
   font-size: 1.5rem;
-  font-weight: 500;
-  transition: color 0.3s ease;
-}
-
-.nav-links a:hover {
-  color: #38bdf8;
 }
 
 /* ==========================================
-   KONTENER Z TREŚCIĄ
+   3. HERO & SEKCJE (Mobile)
    ========================================== */
+.scroll-wrapper {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 6rem 1.5rem 2rem;
+}
+
 .container {
   text-align: center;
   z-index: 1;
-  max-width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
 .title {
-  font-size: 2.5rem;
+  font-size: 2.25rem;
   margin-bottom: 1rem;
   font-weight: 700;
   line-height: 1.2;
+}
+
+.title span {
+  display: inline-block;
+}
+
+.span-title {
+  color: #38bdf8;
+  transform-origin: center center;
 }
 
 .subtitle {
   font-size: 1.125rem;
   color: #cbd5e1;
   margin-bottom: 2rem;
-  line-height: 1.5;
+  font-family: "Elms Sans", sans-serif;
 }
+
+.subtitle span {
+  display: inline-block;
+}
+
 .arrow {
-    font-size: 5rem;
-    transform: rotate(90deg);
-    color:#38bdf8;
-  }
+  display: inline-block;
+  font-size: 3.5rem;
+  color: #38bdf8;
+  transform: rotate(90deg);
+}
+
+/* Sekcja About */
+.about {
+  position: relative;
+  z-index: 2;
+  min-height: 100vh;
+  background-color: #0f172a;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 4rem 1.5rem;
+  text-align: center;
+}
+
+.about h2 {
+  font-family: "Elms Sans", sans-serif;
+  font-size: 2.5rem;
+  color: #38bdf8;
+  margin-bottom: 1.5rem;
+}
+
+.about p {
+  font-size: 1.125rem;
+  max-width: 600px;
+  color: #cbd5e1;
+  line-height: 1.6;
+}
 
 /* ==========================================
-   DESKTOP MEDIA QUERY (>= 768px)
+   4. BREAKPOINTY RESPONSYWNE (Progressive Enhancement)
    ========================================== */
+
+/* Bardzo małe ekrany (Smartfony < 480px) */
+@media (max-width: 479px) {
+  .title {
+    font-size: 1.85rem;
+  }
+  .subtitle {
+    font-size: 1rem;
+  }
+  .about h2 {
+    font-size: 2rem;
+  }
+}
+
+/* Tablet / Desktop (>= 768px) */
 @media (min-width: 768px) {
-  body {
-    justify-content: center;
-    align-items: flex-start;
+  .scroll-wrapper {
+    justify-content: flex-start;
     padding-left: 10%;
-    padding-top: 0;
   }
 
   .navbar {
@@ -183,7 +221,7 @@ body {
   }
 
   .hamburger {
-    display: none; /* Ukrywamy hamburgera na komputerach */
+    display: none;
   }
 
   .nav-links {
@@ -193,7 +231,7 @@ body {
     background: transparent;
     flex-direction: row;
     gap: 2.5rem;
-    transform: none; /* Reset ukrywania */
+    transform: none;
   }
 
   .nav-links a {
@@ -206,17 +244,52 @@ body {
   }
 
   .title {
-    font-size: 5rem;
-    margin-bottom: 1.5rem;
+    font-size: 4.5rem;
   }
 
   .subtitle {
     font-size: 2rem;
-    margin-bottom: 3rem;
   }
+
   .arrow {
-    font-size: 5rem;
-    transform: rotate(90deg);
-    color:#38bdf8;
+    font-size: 4rem;
   }
+
+  .about h2 {
+    font-size: 3rem;
+  }
+
+  .about p {
+    font-size: 1.25rem;
+  }
+}
+
+/* Duże ekrany Desktop (>= 1200px) */
+@media (min-width: 1200px) {
+  .title {
+    font-size: 5.5rem;
+  }
+}
+
+/* ==========================================
+   5. BAZOWE STYLE DLA LENIS SMOOTH SCROLL
+   ========================================== */
+html.lenis, html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-smooth iframe {
+  pointer-events: none;
 }

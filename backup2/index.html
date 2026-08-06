@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+arr<!DOCTYPE html>
 <html lang="pl">
 <head>
   <meta charset="UTF-8">
@@ -7,12 +7,15 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Stack+Sans+Notch:wght@200..700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Elms+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <video class="bg-video" autoplay muted playsinline>
-    <source src="video/gory.mp4" type="video/mp4">
+  <video class="bg-video" autoplay muted playsinline loop>
+    <source src="video/rzeki.mp4" type="video/mp4">
   </video>
   <div class="video-overlay"></div>
 
@@ -33,16 +36,24 @@
     </nav>
   </header>
 
-  <main class="container">
-    <p class="title">Emocje to Design<span class="span-title">.</span></p>
-    <p class="subtitle">Tworzę płynne animację.</p>
-    <a href="#" class="arrow">➛</a>
-  </main>
+  <div class="scroll-wrapper">
+    <main class="container">
+      <p class="title">Emocje to Design<span class="span-title">.</span></p>
+      <p class="subtitle">Tworzę animacje www.</p>
+      <a href="#about" class="arrow">➛</a>    
+    </main>
+  </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/gsap@3.15/dist/gsap.min.js"></script>
+  <section class="about" id="about">
+    <h2>O mnie</h2>
+    <p>Tutaj znajduje się treść nowej sekcji, która wyświetla się po przewinięciu pierwszej sekcji.</p>
+  </section>
 
-  <script src="https://cdn.jsdelivr.net/npm/gsap@3.15/dist/ScrollTrigger.min.js"></script>
-  
+    <script src="https://unpkg.com/lenis@1.1.9/dist/lenis.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+    <script src="script.js"></script>
   <script src="script.js"></script>
 </body>
 </html>

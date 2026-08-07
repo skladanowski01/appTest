@@ -190,7 +190,7 @@ body {
   align-items: center;
   padding: 0;
   flex-shrink: 0;
-  overflow: hidden; /* Odcina elementy paralaksy wychodzące za kadr */
+  overflow: hidden;
 }
 
 .gallery-video {
@@ -213,18 +213,27 @@ body {
   justify-content: center;
   align-items: center;
   z-index: 2;
-  background: rgba(0, 0, 0, 0.35);
   pointer-events: none;
   will-change: transform;
 }
 
+/* Glassmorphism / Transparent Glass Opis */
 .gallery-description {
-  font-size: 3rem;
+  font-size: 3rem; /* Domyślny rozmiar na urządzenia mobilne */
   font-weight: 700;
   color: #ffffff;
-  text-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
   text-align: center;
-  padding: 0 1rem;
+  padding: 1.5rem 3rem;
+  
+  /* Efekt szklanej karty */
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 24px;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  
+  will-change: transform, opacity;
 }
 
 /* ==========================================
@@ -236,6 +245,10 @@ body {
   }
   .subtitle {
     font-size: 1rem;
+  }
+  .gallery-description {
+    font-size: 2rem;
+    padding: 1rem 2rem;
   }
 }
 
@@ -287,14 +300,21 @@ body {
     font-size: 4rem;
   }
 
+  /* Wyższa wartość na desktopie dla wielkiego tekstu (zamiast starego 5rem) */
   .gallery-description {
-    font-size: 5rem;
+    font-size: 8rem; 
+    padding: 2.5rem 5rem;
   }
 }
 
 @media (min-width: 1200px) {
   .title {
     font-size: 5.5rem;
+  }
+  
+  /* Gigantyczny tekst dla dużych ekranów, jeśli chcesz efektu mega czcionki */
+  .gallery-description {
+    font-size: 11rem;
   }
 }
 

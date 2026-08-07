@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pablo z GSAP</title>
   
-  <!-- Lenis CSS (Rekomendowany dla prawidłowej obslugi scrolla) -->
   <link rel="stylesheet" href="https://unpkg.com/lenis@1.1.9/dist/lenis.css">
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -17,7 +16,7 @@
 </head>
 <body>
 
-  <video class="bg-video" autoplay muted playsinline>
+  <video class="bg-video" autoplay muted loop playsinline>
     <source src="video/rzeki.mp4" type="video/mp4">
   </video>
   <div class="video-overlay"></div>
@@ -32,8 +31,7 @@
     </button>
 
     <nav class="nav-links">
-      <a href="#home">Strona Główna</a>
-      <a href="#about">O nas</a>
+      <a href="#home">O mnie</a>
       <a href="#projects">Projekty</a>
       <a href="#contact">Kontakt</a>
     </nav>
@@ -43,21 +41,56 @@
     <main class="container">
       <p class="title">Emocje to Design<span class="span-title">.</span></p>
       <p class="subtitle">Tworzę animacje www.</p>
-      <a href="#about" class="arrow">➛</a>    
+      <a href="#projects" class="arrow">→</a>    
     </main>
   </div>
 
-  <section class="about" id="about">
-    <h2>O mnie</h2>
-    <p>Tutaj znajduje się treść nowej sekcji, która wyświetla się po przewinięciu pierwszej sekcji.</p>
+  <section class="horizontal-container" id="projects">
+    <div class="container-videos">
+      
+      <div class="video-item">
+        <video class="gallery-video" autoplay muted loop playsinline>
+          <source src="video/rzeki.mp4" type="video/mp4">
+        </video>   
+        <div class="video-content">
+          <p class="gallery-description">Żywioły</p>    
+        </div>
+      </div>
+
+      <div class="video-item">
+        <video class="gallery-video" autoplay muted loop playsinline>
+          <source src="video/ognisko.mp4" type="video/mp4">
+        </video>  
+        <div class="video-content">
+          <p class="gallery-description">Wyzwalają</p>     
+        </div>
+      </div>
+
+      <div class="video-item">
+        <video class="gallery-video" autoplay muted loop playsinline>
+          <source src="video/jeziora.mp4" type="video/mp4">
+        </video>  
+        <div class="video-content">
+          <p class="gallery-description">Także</p>     
+        </div>
+      </div>
+
+      <div class="video-item">
+        <video class="gallery-video" autoplay muted loop playsinline>
+          <source src="video/woda.mp4" type="video/mp4">
+        </video>  
+        <div class="video-content">
+          <p class="gallery-description">Emocje.</p>     
+        </div>
+      </div>
+
+    </div>
   </section>
 
-  <!-- Biblioteki JS -->
   <script src="https://unpkg.com/lenis@1.1.9/dist/lenis.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
   
-  <!-- Twój skrypt (wywołany tylko raz) -->
   <script src="script.js"></script>
 </body>
 </html>

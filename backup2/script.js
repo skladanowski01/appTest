@@ -18,24 +18,38 @@ gsap.ticker.lagSmoothing(0);
 // Rejestracja wtyczki ScrollTrigger dla GSAP
 gsap.registerPlugin(ScrollTrigger);
 
-// --- POMOCNICZA FUNKCJA: SplitText ---
+// --- POMOCNICZA FUNKCJA: SplitText (z zachowaniem klas HTML, np. .span-title) ---
 function splitTextIntoSpans(selector) {
   const elements = document.querySelectorAll(selector);
+
   elements.forEach(el => {
-    const text = el.innerText;
-    el.innerHTML = "";
-    
-    [...text].forEach((char, index) => {
-      const span = document.createElement("span");
-      span.style.display = "inline-block";
-      span.innerHTML = char === " " ? "&nbsp;" : char;
-      
-      // Jeśli to kropka na końcu tytułu, dodaj klasę span-title
-      if (char === "." && index === text.length - 1) {
-        span.classList.add("span-title");
+    const childNodes = Array.from(el.childNodes);
+    el.innerHTML = ""; // Czyszczenie rodzica
+
+    childNodes.forEach(node => {
+      // 1. Zwykły tekst
+      if (node.nodeType === Node.TEXT_NODE) {
+        [...node.textContent].forEach(char => {
+          const span = document.createElement("span");
+          span.style.display = "inline-block";
+          span.innerHTML = char === " " ? "&nbsp;" : char;
+          el.appendChild(span);
+        });
+      } 
+      // 2. Element z klasą (np. <span class="span-title">)
+      else if (node.nodeType === Node.ELEMENT_NODE) {
+        const text = node.innerText;
+        node.innerHTML = ""; 
+
+        [...text].forEach(char => {
+          const span = document.createElement("span");
+          span.style.display = "inline-block";
+          span.innerHTML = char === " " ? "&nbsp;" : char;
+          node.appendChild(span);
+        });
+
+        el.appendChild(node);
       }
-      
-      el.appendChild(span);
     });
   });
 }
@@ -108,9 +122,15 @@ heroScrollTl.to(".container", {
   ease: "power1.inOut"
 });
 
-// --- 3. MENU HAMBURGER ---
+// --- 3. OBSŁUGA MENU HAMBURGERA I PRZEWIJANIA ---
 const hamburger = document.querySelector('.hamburger');
 const navLinks = document.querySelector('.nav-links');
+const navItems = document.querySelectorAll('.nav-links a');
+
+const closeMenu = () => {
+  hamburger.classList.remove('active');
+  navLinks.classList.remove('active');
+};
 
 hamburger.addEventListener('click', () => {
   hamburger.classList.toggle('active');
@@ -127,7 +147,23 @@ hamburger.addEventListener('click', () => {
   }
 });
 
-// --- 4. AUTOPLAY WIDEO DLA MOBILNYCH (Poprawiony selektor) ---
+// Zamykanie menu po kliknięciu w link + płynny scroll
+navItems.forEach(link => {
+  link.addEventListener('click', (e) => {
+    closeMenu();
+    
+    const targetId = link.getAttribute('href');
+    if (targetId && targetId.startsWith('#')) {
+      const targetElement = document.querySelector(targetId);
+      if (targetElement) {
+        e.preventDefault();
+        lenis.scrollTo(targetElement);
+      }
+    }
+  });
+});
+
+// --- 4. AUTOPLAY WIDEO DLA MOBILNYCH ---
 const heroVideo = document.querySelector('.bg-video');
 
 if (heroVideo) {

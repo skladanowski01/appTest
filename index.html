@@ -6,11 +6,9 @@
   <title>Pablo z GSAP</title>
   
   <link rel="stylesheet" href="https://unpkg.com/lenis@1.1.9/dist/lenis.css">
-  
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Stack+Sans+Notch:wght@200..700&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Elms+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:opsz,wght@6..144,1..1000&family=Stack+Sans+Notch:wght@200..700&display=swap" rel="stylesheet">
   <link rel="shortcut icon" href="img/pablo logo.ico" type="image/x-icon">
   <link rel="stylesheet" href="style.css">
 </head>
@@ -41,7 +39,7 @@
     <main class="container">
       <p class="title">E<span class="gallery-span">-</span>mocje to także Design<span class="span-title">.</span></p>
       <p class="subtitle">Tworzę animacje www.</p>
-      <a href="#projects" class="arrow">→</a>    
+      <a href="#projects" class="arrow" aria-label="Przejdź do projektów">→</a>    
     </main>
   </div>
 
@@ -54,7 +52,7 @@
         </video> 
         <div class="video-overlay-item"></div>
         <div class="video-content">
-          <p class="gallery-description">E<span class="gallery-span">-</span>mocje<span class="gallery-span">.</span></p>     
+          <p class="gallery-description">E<span class="gallery-span">-</span>mocje</p>     
           <p class="description-item">W Najlepszych markach nie sprzedają funkcji, lecz opowiadają historie, które poruszają serca, budzą nostalgie lub dają poczucie przynależności.</p>
         </div>
       </div>
@@ -76,7 +74,7 @@
         </video> 
         <div class="video-overlay-item"></div>
         <div class="video-content">
-          <p class="gallery-description">Takż<span class="gallery-span">-e</span></p>     
+          <p class="gallery-description">Takż<span class="gallery-span font-style-normal">-e</span></p>     
           <p class="description-item">Logika każe nam porównywać ceny, ale to emocjonalna więź sprawia, że wracamy do tej samej firmy przez lata, stając się jej wiernymi fanami.</p>    
         </div>
       </div>
@@ -87,8 +85,57 @@
         </video> 
         <div class="video-overlay-item"></div>
         <div class="video-content">
-          <p class="gallery-description">Design<span class="gallery-span">.</span></p> 
-          <p class="description-item">W świecie przepełnionym przedmiotami reklamujemy nie tyle sam przedmiot, ile obietnicę lepszego samopoczucia i niezapomnianych chwil.</p>    
+          <p class="gallery-description">Design<span class="gallery-span zoom-out">.</span></p> 
+          <p class="description-item">W świecie przepełnionym przedmiotami reklamujemy nie tyle sam produkt, ile obietnicę lepszego samopoczucia i niezapomnianych chwil.</p>    
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="projects-title-wrapper">
+    <div class="projects">Projekty</div>
+  </section>
+
+  <section class="projects-section" id="projects-grid">
+    <div class="cards-container">
+      
+      <div class="project-card card-1">
+        <div class="card-bg">
+          <img src="https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?q=80&w=1920&auto=format&fit=crop" alt="Projekt 1 - Nowoczesna strona internetowa">
+          <div class="card-overlay"></div>
+        </div>
+        <div class="card-content">
+          <span class="card-number">01 / PROJEKT</span>
+          <h2>Project Alpha</h2>
+          <p>Nowoczesna strona internetowa oparta na zaawansowanych animacjach GSAP i interakcjach 3D.</p>
+          <a href="#" class="card-btn">Zobacz projekt →</a>
+        </div>
+      </div>
+
+      <div class="project-card card-2">
+        <div class="card-bg">
+          <img src="https://images.unsplash.com/photo-1522542550221-31fd19575a2d?q=80&w=1920&auto=format&fit=crop" alt="Projekt 2 - E-commerce premium">
+          <div class="card-overlay"></div>
+        </div>
+        <div class="card-content">
+          <span class="card-number">02 / PROJEKT</span>
+          <h2>Project Beta</h2>
+          <p>E-commerce dedykowany marce premium z płynnym scrollem i spersonalizowanym UI.</p>
+          <a href="#" class="card-btn">Zobacz projekt →</a>
+        </div>
+      </div>
+
+      <div class="project-card card-3">
+        <div class="card-bg">
+          <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1920&auto=format&fit=crop" alt="Projekt 3 - Aplikacja webowa">
+          <div class="card-overlay"></div>
+        </div>
+        <div class="card-content">
+          <span class="card-number">03 / PROJEKT</span>
+          <h2>Project Gamma</h2>
+          <p>Aplikacja webowa stawiająca na mikrointerakcje i niezapomniane wrażenia użytkownika.</p>
+          <a href="#" class="card-btn">Zobacz projekt →</a>
         </div>
       </div>
 

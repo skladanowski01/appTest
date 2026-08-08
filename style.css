@@ -166,7 +166,7 @@ body {
   font-size: 1.125rem;
   color: #cbd5e1;
   margin-bottom: 2rem;
-  font-family: "Elms Sans", sans-serif;
+  font-family: "Google Sans Flex", sans-serif;
 }
 
 .subtitle span {
@@ -219,7 +219,6 @@ body {
   will-change: transform;   
 }
 
-/* Nakładka przyciemniająca wideo */
 .video-overlay-item {
   position: absolute;
   top: 0;
@@ -260,10 +259,11 @@ body {
   will-change: transform, opacity;
 }
 
-/* Style opisu Mobile-First */
 .description-item {
   margin-top: 2rem;
   font-size: 1.125rem;
+  font-family: "Google Sans Flex", sans-serif;
+  font-weight: 700;
   line-height: 1.5;
   width: 85%;
   max-width: 800px;
@@ -378,4 +378,157 @@ html.lenis, html.lenis body {
 
 .lenis.lenis-smooth iframe {
   pointer-events: none;
+}
+
+/* ==========================================
+   7. SECTION PROJECTS
+   ========================================== */
+.projects {
+  height: 100vh;
+  background-color: #0f172a;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 700;
+  text-align: center;
+  padding: 0 1.5rem;
+  font-size: 2.25rem;
+  will-change: transform, opacity;
+}
+
+.projects span {
+  display: inline-block;
+  will-change: transform, opacity;
+}
+
+@media (min-width: 480px) {
+  .projects {
+    font-size: 3.5rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .projects {
+    font-size: 4.5rem;
+  }
+}
+
+@media (min-width: 1200px) {
+  .projects {
+    font-size: 5.5rem;
+  }
+}
+
+/* ==========================================
+   8. FULLSCREEN STACKED PROJECTS SECTION
+   ========================================== */
+.projects-section {
+  position: relative;
+  width: 100vw;
+  background-color: #0f172a;
+  z-index: 2;
+}
+
+.cards-container {
+  position: relative;
+  width: 100vw;
+}
+
+.project-card {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 2rem 1.5rem;
+  overflow: hidden;
+  will-change: transform, filter;
+}
+
+.card-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.card-bg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.card-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.665);
+}
+
+.card-content {
+  position: relative;
+  z-index: 2;
+  max-width: 800px;
+  width: 100%;
+}
+
+.card-number {
+  display: block;
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: #38bdf8;
+  margin-bottom: 1rem;
+  letter-spacing: 2px;
+}
+
+.card-content h2 {
+  font-size: 3rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 1.5rem;
+  line-height: 1.1;
+}
+
+.card-content p {
+  font-size: 1.125rem;
+  color: #cbd5e1;
+  margin-bottom: 2.5rem;
+  line-height: 1.6;
+  font-family: "Google Sans Flex", sans-serif;
+}
+
+.card-btn {
+  display: inline-block;
+  padding: 1rem 2rem;
+  background: #38bdf8;
+  color: #0f172a;
+  font-weight: 700;
+  border-radius: 50px;
+  transition: all 0.3s ease;
+}
+
+.card-btn:hover {
+  background: #ffffff;
+  transform: translateY(-3px);
+  box-shadow: 0 10px 20px rgba(56, 189, 248, 0.3);
+}
+
+@media (min-width: 768px) {
+  .project-card {
+    padding: 0 10%;
+  }
+
+  .card-content h2 {
+    font-size: 5.5rem;
+  }
+
+  .card-content p {
+    font-size: 1.75rem;
+    width: 80%;
+  }
 }

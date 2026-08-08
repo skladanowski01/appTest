@@ -233,7 +233,36 @@ allVideos.forEach(video => {
   videoObserver.observe(video);
 });
 
-// --- 6. ODŚWIEŻANIE SCROLLTRIGGERA ---
+// --- 6. FULLSCREEN STACKING CARDS ANIMATION ---
+const cards = gsap.utils.toArray(".project-card");
+
+cards.forEach((card, i) => {
+  if (i < cards.length - 1) {
+    ScrollTrigger.create({
+      trigger: card,
+      start: "top top",
+      pin: true,
+      pinSpacing: false,
+      scrub: true,
+      anticipatePin: 1,
+      invalidateOnRefresh: true
+    });
+
+    gsap.to(card, {
+      scale: 0.95,
+      ease: "none",
+      scrollTrigger: {
+        trigger: cards[i + 1],
+        start: "top bottom",
+        end: "top top",
+        scrub: true,
+        invalidateOnRefresh: true
+      }
+    });
+  }
+});
+
+// --- 7. ODŚWIEŻANIE SCROLLTRIGGERA PO ZAŁADOWANIU ---
 window.addEventListener("load", () => {
   window.scrollTo(0, 0);
   if (lenis) lenis.scrollTo(0, { immediate: true });

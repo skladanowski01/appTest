@@ -81,6 +81,20 @@ body {
   height: 2px;
   background-color: #ffffff;
   border-radius: 2px;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+/* Animacja ikony hamburgera na 'X' */
+.hamburger.active span:nth-child(1) {
+  transform: translateY(9px) rotate(45deg);
+}
+
+.hamburger.active span:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger.active span:nth-child(3) {
+  transform: translateY(-9px) rotate(-45deg);
 }
 
 .nav-links {
@@ -201,6 +215,9 @@ body {
   box-shadow: none;
   will-change: transform;
 }
+.gallery-span {
+  color: #38bdf8;
+}
 
 /* Nakładka z tekstem bezpośrednio na wideo */
 .video-content {
@@ -219,13 +236,12 @@ body {
 
 /* Glassmorphism / Transparent Glass Opis */
 .gallery-description {
-  font-size: 3rem; /* Domyślny rozmiar na urządzenia mobilne */
+  font-size: 3rem;
   font-weight: 700;
   color: #ffffff;
   text-align: center;
   padding: 1.5rem 3rem;
   
-  /* Efekt szklanej karty */
   background: rgba(255, 255, 255, 0.08);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
@@ -300,7 +316,6 @@ body {
     font-size: 4rem;
   }
 
-  /* Wyższa wartość na desktopie dla wielkiego tekstu (zamiast starego 5rem) */
   .gallery-description {
     font-size: 8rem; 
     padding: 2.5rem 5rem;
@@ -312,7 +327,6 @@ body {
     font-size: 5.5rem;
   }
   
-  /* Gigantyczny tekst dla dużych ekranów, jeśli chcesz efektu mega czcionki */
   .gallery-description {
     font-size: 11rem;
   }

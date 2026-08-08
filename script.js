@@ -5,7 +5,7 @@ if ('scrollRestoration' in history) {
 
 // --- 0. INICJALIZACJA LENIS SMOOTH SCROLL ---
 const lenis = new Lenis({
-  duration: 2.5,
+  duration: 1.2,
   easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
   smoothWheel: true,
   touchMultiplier: 2,
@@ -18,7 +18,6 @@ gsap.ticker.add((time) => {
 });
 
 gsap.ticker.lagSmoothing(0);
-
 gsap.registerPlugin(ScrollTrigger);
 
 // --- POMOCNICZA FUNKCJA: SplitText ---
@@ -26,32 +25,25 @@ function splitTextIntoSpans(selector) {
   const elements = document.querySelectorAll(selector);
 
   elements.forEach(el => {
-    const childNodes = Array.from(el.childNodes);
-    el.innerHTML = "";
-
-    childNodes.forEach(node => {
+    const walkAndSplit = (node) => {
       if (node.nodeType === Node.TEXT_NODE) {
-        [...node.textContent].forEach(char => {
-          const span = document.createElement("span");
-          span.style.display = "inline-block";
-          span.innerHTML = char === " " ? "&nbsp;" : char;
-          el.appendChild(span);
-        });
-      } 
-      else if (node.nodeType === Node.ELEMENT_NODE) {
-        const text = node.innerText;
-        node.innerHTML = ""; 
+        const text = node.textContent;
+        if (!text.trim() && text !== " ") return;
 
+        const fragment = document.createDocumentFragment();
         [...text].forEach(char => {
           const span = document.createElement("span");
           span.style.display = "inline-block";
           span.innerHTML = char === " " ? "&nbsp;" : char;
-          node.appendChild(span);
+          fragment.appendChild(span);
         });
-
-        el.appendChild(node);
+        node.replaceWith(fragment);
+      } else if (node.nodeType === Node.ELEMENT_NODE) {
+        Array.from(node.childNodes).forEach(walkAndSplit);
       }
-    });
+    };
+
+    Array.from(el.childNodes).forEach(walkAndSplit);
   });
 }
 
@@ -65,17 +57,17 @@ masterTl
   .from(".navbar", { y: -50, opacity: 0, duration: 1 })
   .from(".logo", { x: -20, opacity: 0, duration: 0.6 }, "-=0.5")
   .from(".nav-links a", { y: -20, opacity: 0, duration: 0.5, stagger: 0.1 }, "-=0.4")
-  .from(".title span", { y: 50, opacity: 0, rotateX: -90, duration: 0.8, stagger: 0.03 }, "-=0.2")
-  .from(".subtitle span", { y: 20, opacity: 0, duration: 0.5, stagger: 0.02 }, "-=0.4")
+  .from(".title span", { y: 50, opacity: 0, rotateX: -90, duration: 0.8, stagger: 0.02 }, "-=0.2")
+  .from(".subtitle span", { y: 20, opacity: 0, duration: 0.5, stagger: 0.01 }, "-=0.4")
   .from(".arrow", { scale: 0, opacity: 0, duration: 0.8, ease: "back.out(1.7)" }, "-=0.2")
   .to(".arrow", { y: 15, opacity: 0.4, duration: 1.5, repeat: -1, yoyo: true, ease: "sine.inOut" });
 
-// --- 2. GSAP SCROLLTRIGGER (WOLNIEJSZY, BARDZIEJ WIDOCZNY STAGGER) ---
+// --- 2. GSAP SCROLLTRIGGER (WYGASANIE HERO SEKCJI) ---
 gsap.timeline({
   scrollTrigger: {
     trigger: ".scroll-wrapper",
     start: "top top",
-    end: "40% top",
+    end: "60% top",
     scrub: true,
     invalidateOnRefresh: true
   }
@@ -83,23 +75,24 @@ gsap.timeline({
 .to(".title span", {
   y: -50,
   opacity: 0,
-  stagger: 0.08,
+  stagger: 0.02,
   ease: "power1.in"
 }, 0)
 .to(".subtitle span", {
   y: -30,
   opacity: 0,
-  stagger: 0.04,
+  stagger: 0.01,
   ease: "power1.in"
-}, 0.2)
+}, 0.1)
 .to(".arrow", {  
   opacity: 0,
   scale: 0.1,
   ease: "power1.in"
-}, 0.4);
+}, 0.2);
 
 // --- 3. ANIMACJA HORIZONTAL SCROLL + EFEKT PARALAKSY ---
 const containerVideos = document.querySelector(".container-videos");
+let projectsScrollTrigger;
 
 if (containerVideos) {
   const horizontalTween = gsap.to(containerVideos, {
@@ -111,7 +104,10 @@ if (containerVideos) {
       end: () => `+=${containerVideos.scrollWidth - window.innerWidth}`,
       pin: true,
       scrub: 1,
-      invalidateOnRefresh: true
+      invalidateOnRefresh: true,
+      onRefresh: (self) => {
+        projectsScrollTrigger = self;
+      }
     }
   });
 
@@ -124,9 +120,9 @@ if (containerVideos) {
     if (video) {
       gsap.fromTo(
         video,
-        { xPercent: -15, scale: 1.15 },
+        { xPercent: -10, scale: 1.1 },
         {
-          xPercent: 15,
+          xPercent: 10,
           ease: "none",
           scrollTrigger: {
             trigger: item,
@@ -142,9 +138,9 @@ if (containerVideos) {
     if (text) {
       gsap.fromTo(
         text,
-        { xPercent: 10 },
+        { xPercent: 15 },
         {
-          xPercent: -10,
+          xPercent: -15,
           ease: "none",
           scrollTrigger: {
             trigger: item,
@@ -168,59 +164,76 @@ const closeMenu = () => {
   if (hamburger && navLinks) {
     hamburger.classList.remove('active');
     navLinks.classList.remove('active');
+    lenis.start();
   }
 };
 
 if (hamburger) {
   hamburger.addEventListener('click', () => {
-    hamburger.classList.toggle('active');
+    const isActive = hamburger.classList.toggle('active');
     navLinks.classList.toggle('active');
 
-    if (navLinks.classList.contains('active')) {
-      gsap.from(".nav-links a", {
-        y: 20,
-        opacity: 0,
-        stagger: 0.1,
-        duration: 0.4,
-        delay: 0.2
-      });
+    if (isActive) {
+      lenis.stop();
+      gsap.fromTo(".nav-links a", 
+        { y: 20, opacity: 0 },
+        { y: 0, opacity: 1, stagger: 0.1, duration: 0.4, delay: 0.1 }
+      );
+    } else {
+      lenis.start();
     }
   });
 }
 
 navItems.forEach(link => {
   link.addEventListener('click', (e) => {
-    closeMenu();
-    
     const targetId = link.getAttribute('href');
+    
     if (targetId && targetId.startsWith('#')) {
+      e.preventDefault();
+      closeMenu();
+      
       const targetElement = document.querySelector(targetId);
       if (targetElement) {
-        e.preventDefault();
-        lenis.scrollTo(targetElement);
+        if (targetId === "#projects" && projectsScrollTrigger) {
+          lenis.scrollTo(projectsScrollTrigger.start);
+        } else {
+          lenis.scrollTo(targetElement);
+        }
       }
     }
   });
 });
 
-// --- 5. AUTOPLAY WIDEO ---
+// --- 5. AUTOPLAY WIDEO (INTERSECTION OBSERVER) ---
 const allVideos = document.querySelectorAll('video');
+
+const videoObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.play().catch(err => console.warn("Autoplay blocked:", err));
+    } else {
+      entry.target.pause();
+    }
+  });
+}, { threshold: 0.2 });
 
 allVideos.forEach(video => {
   video.muted = true;
-  const playPromise = video.play();
-
-  if (playPromise !== undefined) {
-    playPromise.catch((error) => {
-      console.warn("Autoplay zablokowany:", error);
-    });
-  }
+  videoObserver.observe(video);
 });
 
-// --- 6. PONOWNE PRZELICZENIE PO ZAŁADOWANIU DANYCH ---
+// --- 6. ODŚWIEŻANIE SCROLLTRIGGERA ---
 window.addEventListener("load", () => {
   window.scrollTo(0, 0);
   if (lenis) lenis.scrollTo(0, { immediate: true });
-  
   ScrollTrigger.refresh();
+});
+
+let resizeTimer;
+window.addEventListener("resize", () => {
+  clearTimeout(resizeTimer);
+  resizeTimer = setTimeout(() => {
+    ScrollTrigger.refresh();
+  }, 250);
 });

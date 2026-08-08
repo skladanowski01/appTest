@@ -47,8 +47,13 @@ function splitTextIntoSpans(selector) {
   });
 }
 
-splitTextIntoSpans(".title");
-splitTextIntoSpans(".subtitle");
+// Sprawdzamy szerokość ekranu (SplitText & Stagger działają od 768px)
+const isDesktop = window.innerWidth >= 768;
+
+if (isDesktop) {
+  splitTextIntoSpans(".title");
+  splitTextIntoSpans(".subtitle");
+}
 
 // --- 1. ANIMACJA WEJŚCIOWA (HERO LOAD) ---
 const masterTl = gsap.timeline({ defaults: { ease: "power3.out" } });
@@ -56,14 +61,24 @@ const masterTl = gsap.timeline({ defaults: { ease: "power3.out" } });
 masterTl
   .from(".navbar", { y: -50, opacity: 0, duration: 1 })
   .from(".logo", { x: -20, opacity: 0, duration: 0.6 }, "-=0.5")
-  .from(".nav-links a", { y: -20, opacity: 0, duration: 0.5, stagger: 0.1 }, "-=0.4")
-  .from(".title span", { y: 50, opacity: 0, rotateX: -90, duration: 0.8, stagger: 0.02 }, "-=0.2")
-  .from(".subtitle span", { y: 20, opacity: 0, duration: 0.5, stagger: 0.01 }, "-=0.4")
+  .from(".nav-links a", { y: -20, opacity: 0, duration: 0.5, stagger: 0.1 }, "-=0.4");
+
+if (isDesktop) {
+  masterTl
+    .from(".title span", { y: 50, opacity: 0, rotateX: -90, duration: 0.8, stagger: 0.02 }, "-=0.2")
+    .from(".subtitle span", { y: 20, opacity: 0, duration: 0.5, stagger: 0.01 }, "-=0.4");
+} else {
+  masterTl
+    .from(".title", { y: 30, opacity: 0, duration: 0.8 }, "-=0.2")
+    .from(".subtitle", { y: 20, opacity: 0, duration: 0.6 }, "-=0.4");
+}
+
+masterTl
   .from(".arrow", { scale: 0, opacity: 0, duration: 0.8, ease: "back.out(1.7)" }, "-=0.2")
   .to(".arrow", { y: 15, opacity: 0.4, duration: 1.5, repeat: -1, yoyo: true, ease: "sine.inOut" });
 
 // --- 2. GSAP SCROLLTRIGGER (WYGASANIE HERO SEKCJI) ---
-gsap.timeline({
+const heroFadeTl = gsap.timeline({
   scrollTrigger: {
     trigger: ".scroll-wrapper",
     start: "top top",
@@ -71,26 +86,21 @@ gsap.timeline({
     scrub: true,
     invalidateOnRefresh: true
   }
-})
-.to(".title span", {
-  y: -50,
-  opacity: 0,
-  stagger: 0.02,
-  ease: "power1.in"
-}, 0)
-.to(".subtitle span", {
-  y: -30,
-  opacity: 0,
-  stagger: 0.01,
-  ease: "power1.in"
-}, 0.1)
-.to(".arrow", {  
-  opacity: 0,
-  scale: 0.1,
-  ease: "power1.in"
-}, 0.2);
+});
 
-// --- 3. ANIMACJA HORIZONTAL SCROLL + EFEKT PARALAKSY ---
+if (isDesktop) {
+  heroFadeTl
+    .to(".title span", { y: -50, opacity: 0, stagger: 0.02, ease: "power1.in" }, 0)
+    .to(".subtitle span", { y: -30, opacity: 0, stagger: 0.01, ease: "power1.in" }, 0.1);
+} else {
+  heroFadeTl
+    .to(".title", { y: -30, opacity: 0, ease: "power1.in" }, 0)
+    .to(".subtitle", { y: -20, opacity: 0, ease: "power1.in" }, 0.1);
+}
+
+heroFadeTl.to(".arrow", { opacity: 0, scale: 0.1, ease: "power1.in" }, 0.2);
+
+// --- 3. ANIMACJA HORIZONTAL SCROLL + PARALAKSA ---
 const containerVideos = document.querySelector(".container-videos");
 let projectsScrollTrigger;
 
@@ -155,7 +165,7 @@ if (containerVideos) {
   });
 }
 
-// --- 4. OBSŁUGA MENU HAMBURGERA I SCROLLA ---
+// --- 4. MENU HAMBURGER & SCROLL ---
 const hamburger = document.querySelector('.hamburger');
 const navLinks = document.querySelector('.nav-links');
 const navItems = document.querySelectorAll('.nav-links a');
@@ -205,7 +215,7 @@ navItems.forEach(link => {
   });
 });
 
-// --- 5. AUTOPLAY WIDEO (INTERSECTION OBSERVER) ---
+// --- 5. AUTOPLAY WIDEO ---
 const allVideos = document.querySelectorAll('video');
 
 const videoObserver = new IntersectionObserver((entries) => {

@@ -74,7 +74,7 @@ if (isDesktop) {
 }
 
 masterTl
-  .from(".arrow", { scale: 0, opacity: 0, duration: 0.8, ease: "back.out(1.7)" }, "-=0.2")
+  .from(".scroll-wrapper .arrow", { scale: 0, opacity: 0, duration: 0.8, ease: "back.out(1.7)" }, "-=0.2")
   .to(".arrow", { y: 15, opacity: 0.4, duration: 1.5, repeat: -1, yoyo: true, ease: "sine.inOut" });
 
 // --- 2. GSAP SCROLLTRIGGER (WYGASANIE HERO SEKCJI) ---
@@ -98,7 +98,7 @@ if (isDesktop) {
     .to(".subtitle", { y: -20, opacity: 0, ease: "power1.in" }, 0.1);
 }
 
-heroFadeTl.to(".arrow", { opacity: 0, scale: 0.1, ease: "power1.in" }, 0.2);
+heroFadeTl.to(".scroll-wrapper .arrow", { opacity: 0, scale: 0.1, ease: "power1.in" }, 0.2);
 
 // --- 3. ANIMACJA HORIZONTAL SCROLL + PARALAKSA ---
 const containerVideos = document.querySelector(".container-videos");
@@ -168,7 +168,7 @@ if (containerVideos) {
 // --- 4. MENU HAMBURGER & SCROLL ---
 const hamburger = document.querySelector('.hamburger');
 const navLinks = document.querySelector('.nav-links');
-const navItems = document.querySelectorAll('.nav-links a');
+const navItems = document.querySelectorAll('.nav-links a, .arrow');
 
 const closeMenu = () => {
   if (hamburger && navLinks) {
@@ -233,7 +233,30 @@ allVideos.forEach(video => {
   videoObserver.observe(video);
 });
 
-// --- 6. FULLSCREEN STACKING CARDS ANIMATION ---
+// --- 6. ANIMACJA SEKCJI "PROJEKTY" (Pojawianie tytułu) ---
+const projectsTitle = document.querySelector(".projects-title");
+
+if (projectsTitle) {
+  gsap.fromTo(projectsTitle, 
+    { 
+      scale: 0.8, 
+      opacity: 0 
+    },
+    {
+      scale: 1,
+      opacity: 1,
+      ease: "power2.out",
+      scrollTrigger: {
+        trigger: ".projects-title-wrapper",
+        start: "top 80%", 
+        end: "center center",
+        scrub: true
+      }
+    }
+  );
+}
+
+// --- 7. FULLSCREEN STACKING CARDS ANIMATION ---
 const cards = gsap.utils.toArray(".project-card");
 
 cards.forEach((card, i) => {
@@ -262,7 +285,7 @@ cards.forEach((card, i) => {
   }
 });
 
-// --- 7. ODŚWIEŻANIE SCROLLTRIGGERA PO ZAŁADOWANIU ---
+// --- 8. ODŚWIEŻANIE SCROLLTRIGGERA PO ZAŁADOWANIU ---
 window.addEventListener("load", () => {
   window.scrollTo(0, 0);
   if (lenis) lenis.scrollTo(0, { immediate: true });

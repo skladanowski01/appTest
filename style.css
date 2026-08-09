@@ -383,38 +383,48 @@ html.lenis, html.lenis body {
 /* ==========================================
    7. SECTION PROJECTS
    ========================================== */
-.projects {
+.projects-title-wrapper {
+  width: 100vw;
   height: 100vh;
-  background-color: #0f172a;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
+  gap: 2rem;
+  background-color: #0f172a;
+  position: relative;
+  z-index: 2;
+  overflow: hidden;
+} 
+
+.projects-title {
+  font-size: 2.25rem;
   font-weight: 700;
   text-align: center;
   padding: 0 1.5rem;
-  font-size: 2.25rem;
+  color: #ffffff;
   will-change: transform, opacity;
 }
 
-.projects span {
+.projects-title span {
   display: inline-block;
   will-change: transform, opacity;
 }
 
 @media (min-width: 480px) {
-  .projects {
+  .projects-title {
     font-size: 3.5rem;
   }
 }
 
 @media (min-width: 768px) {
-  .projects {
+  .projects-title {
     font-size: 4.5rem;
   }
 }
 
 @media (min-width: 1200px) {
-  .projects {
+  .projects-title {
     font-size: 5.5rem;
   }
 }
@@ -494,15 +504,17 @@ html.lenis, html.lenis body {
   line-height: 1.1;
 }
 
-.card-content p {
+.card-content h3 {
   font-size: 1.125rem;
   color: #cbd5e1;
   margin-bottom: 2.5rem;
   line-height: 1.6;
   font-family: "Google Sans Flex", sans-serif;
+  font-weight: 400;
 }
 
 .card-btn {
+  margin-top: 2rem;
   display: inline-block;
   padding: 1rem 2rem;
   background: #38bdf8;
@@ -527,7 +539,7 @@ html.lenis, html.lenis body {
     font-size: 5.5rem;
   }
 
-  .card-content p {
+  .card-content h3 {
     font-size: 1.75rem;
     width: 80%;
   }
